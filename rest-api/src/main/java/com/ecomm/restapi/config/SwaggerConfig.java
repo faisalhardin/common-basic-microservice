@@ -20,10 +20,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
-//@Profile("dev")
+
 @Configuration
-//@EnableSwagger2
-public class SwaggerConfig{// extends WebMvcConfigurationSupport{
+public class SwaggerConfig{
 
     @Bean
     public Docket apiEndpointVessel() {
@@ -33,9 +32,8 @@ public class SwaggerConfig{// extends WebMvcConfigurationSupport{
                 .paths(PathSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("/error/*")))
                 .paths(Predicates.not(PathSelectors.regex("/actuator")))
-                .build();
-//                .pathMapping("/");
-//                .apiInfo(apiInfo());
+                .build()
+                .apiInfo(apiInfo());
 
     }
 
