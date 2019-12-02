@@ -10,10 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 @RequestMapping(value = "user")
 public class UserController {
+
     @Autowired
     UserService userService;
 
@@ -57,6 +59,7 @@ public class UserController {
 
     }
 
+    @HystrixCommand(fallbackMethod = "fallback")
     @GetMapping(value = "id")
     ResponseEntity<Response> getById (@PathVariable ("id")Long id)
     {
@@ -118,5 +121,9 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
+    }
+
+    public User fallback(Long id, Throwable hystrixCommand) {
+        return new User();
     }
 }
