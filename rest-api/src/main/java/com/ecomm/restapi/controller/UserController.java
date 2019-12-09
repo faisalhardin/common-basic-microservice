@@ -123,6 +123,27 @@ public class UserController {
                 .body(response);
     }
 
+    @GetMapping(value = "email")
+    ResponseEntity<Response> getByEmail (@PathVariable ("email")String email)
+    {
+
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+
+        Response response = new Response();
+        response.setService(this.getClass().getName() + nameofCurrMethod);
+        response.setMessage("Success Find By Email");
+
+
+        response.setData(userService.findByEmail(email));
+
+        return  ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     public User fallback(Long id, Throwable hystrixCommand) {
         return new User();
     }
