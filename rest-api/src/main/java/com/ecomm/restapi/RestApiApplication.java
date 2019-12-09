@@ -7,9 +7,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 
+@SpringBootApplication
 @EnableEurekaClient
 @EnableSwagger2
-@SpringBootApplication
 @EnableCircuitBreaker
 public class RestApiApplication extends SpringBootServletInitializer{
 
