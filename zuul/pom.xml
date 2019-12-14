@@ -40,6 +40,27 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.eureka</groupId>-->
+<!--			<artifactId>common</artifactId>-->
+<!--			<version>0.0.1-SNAPSHOT</version>-->
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${settings.localRepository}/com/eureka/common/0.0.1-SNAPSHOT/common-0.0.1-SNAPSHOT.jar</systemPath>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.eureka</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

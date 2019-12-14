@@ -123,7 +123,8 @@ public class UserController {
                 .body(response);
     }
 
-    @GetMapping(value = "email")
+
+    @GetMapping(value = "/email/{email}")
     ResponseEntity<Response> getByEmail (@PathVariable ("email")String email)
     {
 

@@ -1,6 +1,8 @@
 package com.eureka.common.security;
 import org.springframework.beans.factory.annotation.Value;
 
+
+
 public class JwtConfig {
     @Value("${security.jwt.uri:/auth/**}")
     private String Uri;
