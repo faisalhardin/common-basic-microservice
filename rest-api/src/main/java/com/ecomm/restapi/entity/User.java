@@ -9,6 +9,8 @@ import javax.persistence.Id;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Setter
@@ -32,4 +34,9 @@ public class User {
 
         @Column (name = "role")
         private String role;
+
+        public void setPassword(String password) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            this.password = encoder.encode(password);
+        }
 }

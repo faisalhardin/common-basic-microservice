@@ -30,7 +30,7 @@ public class UserController {
 
         Response response = new Response();
         response.setService(this.getClass().getName() + nameofCurrMethod);
-        response.setMessage("Success New User");
+        response.setMessage("Success New User" + user.getEmail());
 
         response.setData(userService.create(user));
 
@@ -140,6 +140,25 @@ public class UserController {
         response.setData(userService.findByEmail(email));
 
         return  ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping(value= "email")
+    ResponseEntity<Response> getByEmail (@RequestBody @Validated User user)
+    {
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+
+        Response response = new Response();
+        response.setService(this.getClass().getName() + nameofCurrMethod);
+        response.setMessage("Success Post to get User by Email" + user.getEmail());
+
+        response.setData(userService.findByEmail(user.getEmail()));
+
+        return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
