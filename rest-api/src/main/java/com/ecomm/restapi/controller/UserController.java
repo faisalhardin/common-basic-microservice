@@ -40,7 +40,7 @@ public class UserController {
                 .body(response);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     ResponseEntity<Response> update(@PathVariable ("id")Long id, @RequestBody @Validated User user)
     {
         String nameofCurrMethod = new Throwable()
@@ -59,9 +59,10 @@ public class UserController {
 
     }
 
+
+    @GetMapping(value = "/{id}")
     @HystrixCommand(fallbackMethod = "fallback")
-    @GetMapping(value = "id")
-    ResponseEntity<Response> getById (@PathVariable ("id")Long id)
+    ResponseEntity<Response> getById (@PathVariable("id") Long id)
     {
 
         String nameofCurrMethod = new Throwable()
@@ -71,8 +72,6 @@ public class UserController {
         Response response = new Response();
         response.setService(this.getClass().getName() + nameofCurrMethod);
         response.setMessage("Success Find By ID");
-
-
         response.setData(userService.findById(id));
 
         return  ResponseEntity
@@ -102,7 +101,7 @@ public class UserController {
                 .body(response);
     }
 
-    @DeleteMapping(value = "id")
+    @DeleteMapping(value = "/{id}")
     ResponseEntity<Response> deleteById (@PathVariable ("id")Long id)
     {
 
@@ -164,7 +163,25 @@ public class UserController {
                 .body(response);
     }
 
-    public User fallback(Long id, Throwable hystrixCommand) {
-        return new User();
+    public ResponseEntity<Response> fallback(Long id, Throwable hystrixCommand) {
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+
+        Response response = new Response();
+        response.setService(this.getClass().getName() + nameofCurrMethod);
+        response.setMessage("No User by requested Id");
+
+        User user = new User();
+        user.setId(id);
+
+        response.setData(user);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+
+
     }
 }

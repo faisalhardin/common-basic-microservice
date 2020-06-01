@@ -22,12 +22,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findById(Long id) {
-        return userRepository.getOne(id);
+        return userRepository.findById(id).get();
     }
 
     @Override
     public User update(Long id, User user) {
-        user.getId();
         return userRepository.save(user);
     }
 
