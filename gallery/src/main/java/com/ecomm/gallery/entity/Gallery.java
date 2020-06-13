@@ -19,7 +19,7 @@ public class Gallery {
     private String url;
 
     @Column(name="userId")
-    private String userId;
+    private Long userId;
 
     @Column(name="date")
     private String date;

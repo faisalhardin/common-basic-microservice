@@ -24,12 +24,12 @@ public class UserController {
     @PostMapping
     ResponseEntity<Response> create (@RequestBody @Validated User user)
     {
-        String nameofCurrMethod = new Throwable()
+        String nameOfCurrMethod = new Throwable()
                 .getStackTrace()[0]
                 .getMethodName();
 
         Response response = new Response();
-        response.setService(this.getClass().getName() + nameofCurrMethod);
+        response.setService(this.getClass().getName() + nameOfCurrMethod);
         response.setMessage("Success New User" + user.getEmail());
 
         response.setData(userService.create(user));
@@ -102,7 +102,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    ResponseEntity<Response> deleteById (@PathVariable ("id")Long id)
+    ResponseEntity<Response> deleteById (@PathVariable("id") Long id)
     {
 
         String nameofCurrMethod = new Throwable()
@@ -181,7 +181,5 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
-
-
     }
 }

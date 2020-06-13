@@ -4,7 +4,10 @@ import com.ecomm.gallery.entity.Gallery;
 import com.ecomm.gallery.repository.GalleryRepository;
 import com.ecomm.gallery.service.GalleryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -17,6 +20,11 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public List<Gallery> findAll() {
         return galleryRepository.findAll();
+    }
+
+    @Override
+    public Page<Gallery> findByUserId(Long userId, Pageable pageable) {
+        return galleryRepository.findAllByUserId(userId, pageable);
     }
 
     @Override
@@ -34,6 +42,8 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public void delete(Long id) {
-
+        galleryRepository.deleteById(id);
     }
+
+
 }
