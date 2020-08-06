@@ -25,7 +25,7 @@ public class SendMessageController {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @PostMapping("/send-update")
+    @PostMapping("/send-create")
     public ResponseEntity<Response> sendMessageCreate(@RequestBody @Validated User user) {
 
         String nameOfCurrMethod = new Throwable()
@@ -80,7 +80,7 @@ public class SendMessageController {
         UserRequest user = new UserRequest();
         user.setEmail(email);
         AbstractResponse response = (AbstractResponse) rabbitTemplate.convertSendAndReceive(ConfigureRabbitMq.EXCHANGE_NAME,
-                "user.get.get", user);
+                "api.product.get", user);
 
         jres.setMessage("Success Get User" + user.getEmail());
         jres.setData(response);

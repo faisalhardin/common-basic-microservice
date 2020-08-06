@@ -67,7 +67,7 @@ public class UserResponse implements AbstractResponse, Serializable {
 
     @Override
     public String toString() {
-        return "UserRequest { " +
+        return "UserResponse { " +
                 "id ='" + id + "'" +
                 ", email ='" + email + "'" +
                 ", password ='" + password + "'" +
