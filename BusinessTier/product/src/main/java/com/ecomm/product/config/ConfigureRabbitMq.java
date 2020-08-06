@@ -7,16 +7,17 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableRabbit
 public class ConfigureRabbitMq {
 
     public static final String EXCHANGE_NAME = "product.exchange";
-    public static final String QUEUE_NAME_CREATE = "product.queue.create";
-    public static final String QUEUE_NAME_INQUIRY = "product.queue.inquiry";
-    public static final String QUEUE_NAME_UPDATE = "product.queue.update";
-    public static final String QUEUE_NAME_DELETE = "product.queue.delete";
+    public static final String QUEUE_NAME_CREATE = "api.product.create";
+    public static final String QUEUE_NAME_INQUIRY = "api.product.inquiry";
+    public static final String QUEUE_NAME_UPDATE = "api.product.update";
+    public static final String QUEUE_NAME_DELETE = "api.product.delete";
 
     @Bean
     Queue createQueueCreate() {
@@ -37,22 +38,22 @@ public class ConfigureRabbitMq {
 
     @Bean
     Binding bindingCreateProduct( Queue createQueueCreate, TopicExchange exchange ) {
-        return BindingBuilder.bind(createQueueCreate).to(exchange).with("product.product.create");
+        return BindingBuilder.bind(createQueueCreate).to(exchange).with("*.product.create");
     }
 
     @Bean
     Binding bindingInquiryProduct( Queue createQueueInquiry, TopicExchange exchange ) {
-        return BindingBuilder.bind(createQueueInquiry).to(exchange).with("product.product.inquire");
+        return BindingBuilder.bind(createQueueInquiry).to(exchange).with("*.product.inquire");
     }
 
     @Bean
     Binding bindingUpdateProduct( Queue createQueueUpdate, TopicExchange exchange ) {
-        return BindingBuilder.bind(createQueueUpdate).to(exchange).with("product.product.update");
+        return BindingBuilder.bind(createQueueUpdate).to(exchange).with("*.product.update");
     }
 
     @Bean
     Binding bindingDeleteProduct( Queue createQueueDelete, TopicExchange exchange ) {
-        return BindingBuilder.bind(createQueueDelete).to(exchange).with("product.product.delete");
+        return BindingBuilder.bind(createQueueDelete).to(exchange).with("*.product.delete");
     }
 
     @Bean

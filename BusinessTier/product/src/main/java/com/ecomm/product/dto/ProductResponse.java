@@ -2,7 +2,9 @@ package com.ecomm.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ProductResponse implements  AbstractResponse {
+import java.io.Serializable;
+
+public class ProductResponse implements  Serializable {
     private Long id;
     private String name;
     private  String imageUrl;

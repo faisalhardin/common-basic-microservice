@@ -2,12 +2,9 @@ package com.ecomm.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 
-public class ProductRequest implements AbstractRequest, Serializable {
+public class ProductRequest implements Serializable {
     private Long id;
     private String name;
     private  String imageUrl;

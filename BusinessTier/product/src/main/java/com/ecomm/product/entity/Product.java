@@ -1,10 +1,11 @@
 package com.ecomm.product.entity;
 
 import javax.persistence.*;
-
+import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Setter
@@ -25,8 +26,8 @@ public class Product {
     @Column(name = "tag")
     private String tag;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name ="creationTime")
-    private java.util.Date creationTime;
+    @CreationTimestamp
+    private Date creationTime;
 
 }

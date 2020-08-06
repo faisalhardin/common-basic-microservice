@@ -15,4 +15,6 @@ public interface ProductService {
     Product create(Product product);
 
     void delete(Long id);
+
+    List<Product> findByTags(String tags);
 }

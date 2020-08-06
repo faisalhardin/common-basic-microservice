@@ -43,6 +43,7 @@ public class ProductServiceImpl implements  ProductService{
         productRepository.deleteById(id);
     }
 
+    @Override
     public List<Product> findByTags(String tags) {
         return productRepository.findByTagContaining(tags);
     }
