@@ -36,14 +36,14 @@ public class ProductAPI {
         Response jres = new Response();
         jres.setService(this.getClass().getName() + nameOfCurrMethod);
 
-        ProductResponse response = rabbitTemplate.convertSendAndReceiveAsType(
+        rabbitTemplate.convertAndSend(
             ConfigureRabbitMq.EXCHANGE_NAME,
             "api.product.create",
-            productRequest,
-            new ParameterizedTypeReference<ProductResponse>() {}
+            productRequest
         );
+
         jres.setMessage("Success New Product" + productRequest.getName());
-        jres.setData(response);
+        jres.setData(null);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -61,10 +61,15 @@ public class ProductAPI {
         Response jres = new Response();
         jres.setService(this.getClass().getName() + nameOfCurrMethod);
         productRequest.setId(id);
-        ProductResponse response = (ProductResponse) rabbitTemplate.convertSendAndReceive(ConfigureRabbitMq.EXCHANGE_NAME,
-                "api.product.update", productRequest);
+
+        rabbitTemplate.convertAndSend(
+                ConfigureRabbitMq.EXCHANGE_NAME,
+                "api.product.update",
+                productRequest
+        );
+
         jres.setMessage("Success Edit Product" + productRequest.getName());
-        jres.setData(response);
+        jres.setData(null);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -81,10 +86,15 @@ public class ProductAPI {
 
         Response jres = new Response();
         jres.setService(this.getClass().getName() + nameOfCurrMethod);
-        AbstractResponse response = (AbstractResponse) rabbitTemplate.convertSendAndReceive(ConfigureRabbitMq.EXCHANGE_NAME,
-                "api.product.get", id);
 
-        jres.setMessage("Success Get User" + id);
+        ProductResponse response = rabbitTemplate.convertSendAndReceiveAsType(
+                ConfigureRabbitMq.EXCHANGE_NAME,
+                "api.product.inquire",
+                id,
+                new ParameterizedTypeReference<ProductResponse>() {}
+        );
+
+        jres.setMessage("Success Get User " + id);
         jres.setData(response);
         return ResponseEntity
                 .status(HttpStatus.OK)

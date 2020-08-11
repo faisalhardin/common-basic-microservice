@@ -26,7 +26,7 @@ public class ConfigureRabbitMq {
 
     public static final String EXCHANGE_NAME = "product.exchange";
     public static final String QUEUE_NAME_CREATE = "api.product.create";
-    public static final String QUEUE_NAME_INQUIRY = "api.product.inquiry";
+    public static final String QUEUE_NAME_INQUIRY = "api.product.inquire";
     public static final String QUEUE_NAME_UPDATE = "api.product.update";
     public static final String QUEUE_NAME_DELETE = "api.product.delete";
 
