@@ -5,23 +5,22 @@ import com.ecomm.productapi.dto.AbstractResponse;
 import com.ecomm.productapi.dto.ProductRequest;
 import com.ecomm.productapi.dto.ProductResponse;
 import com.ecomm.productapi.util.Response;
-import lombok.extern.slf4j.XSlf4j;
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-//import org.apache.logging.slf4j;
+
 
 @RestController
 @RequestMapping(value = "product")
 public class ProductAPI {
 
-    private final RabbitTemplate rabbitTemplate;
+    @Autowired
+    private  RabbitTemplate rabbitTemplate;
 
     public ProductAPI(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
@@ -36,8 +35,13 @@ public class ProductAPI {
 
         Response jres = new Response();
         jres.setService(this.getClass().getName() + nameOfCurrMethod);
-        ProductResponse response = (ProductResponse) rabbitTemplate.convertSendAndReceive(ConfigureRabbitMq.EXCHANGE_NAME,
-                "api.product.create", productRequest);
+
+        ProductResponse response = rabbitTemplate.convertSendAndReceiveAsType(
+            ConfigureRabbitMq.EXCHANGE_NAME,
+            "api.product.create",
+            productRequest,
+            new ParameterizedTypeReference<ProductResponse>() {}
+        );
         jres.setMessage("Success New Product" + productRequest.getName());
         jres.setData(response);
 
@@ -47,7 +51,6 @@ public class ProductAPI {
                 .body(jres);
 
     }
-
     @PutMapping("/send-update/{id}")
     public ResponseEntity<Response> sendMessageModify(@PathVariable ("id")Long id, @RequestBody @Validated ProductRequest productRequest) {
 
@@ -67,7 +70,6 @@ public class ProductAPI {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(jres);
-
     }
 
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class ProductRequest implements Serializable {
+public class ProductRequest {
     private Long id;
     private String name;
     private  String imageUrl;

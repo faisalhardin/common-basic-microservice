@@ -1,9 +1,12 @@
 package com.ecomm.productapi.config;
 
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.DirectReplyToMessageListenerContainer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -17,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableRabbit
 public class ConfigureRabbitMq {
+
+    @Autowired
+    public ConnectionFactory connectionFactory;
 
     public static final String EXCHANGE_NAME = "product.exchange";
     public static final String QUEUE_NAME_CREATE = "api.product.create";
@@ -68,41 +74,39 @@ public class ConfigureRabbitMq {
         return new Jackson2JsonMessageConverter();
     }
 
-    @Bean
-    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
-        rabbitTemplate.setReplyAddress(replyQueue().getName());
-        rabbitTemplate.setUseDirectReplyToContainer(false);
-        return rabbitTemplate;
-    }
-
-    @Bean
-    public SimpleMessageListenerContainer replyListenerContainer(final ConnectionFactory connectionFactory, RabbitTemplate rabbitTemplate) {
-
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setMessageListener(rabbitTemplate);
-        container.setQueues(replyQueue());
-        return container;
-    }
-
 //    @Bean
 //    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
 //        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
 //        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
-//        rabbitTemplate.setReplyAddress(replyQueue().getName());
+//        rabbitTemplate.receive(replyQueue().getName());
+////        rabbitTemplate.setReplyAddress(replyQueue().getName());
 //        rabbitTemplate.setUseDirectReplyToContainer(false);
 //        return rabbitTemplate;
 //    }
 
-
+//    @Bean
+//    public DirectReplyToMessageListenerContainer directReplyToMessageListenerContainer(final ConnectionFactory connectionFactory, RabbitTemplate rabbitTemplate) {
+//
+//        DirectReplyToMessageListenerContainer container = new DirectReplyToMessageListenerContainer(connectionFactory);
+//        container.setConnectionFactory(connectionFactory);
+//        container.setMessageListener(rabbitTemplate);
+//        container.setQueues(replyQueue());
+//        return container;
+//    }
 
     @Bean
-    public Queue replyQueue() {
-        return new Queue("my.reply.queue");
+    public RabbitTemplate rabbitTemplate() {
+        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+//        rabbitTemplate.setReplyAddress(replyQueue().getName());
+//        rabbitTemplate.setUseDirectReplyToContainer(false);
+        return rabbitTemplate;
     }
 
+//    @Bean
+//    public Queue replyQueue() {
+//        return new Queue("my.reply.queue");
+//    }
 
 
 }
