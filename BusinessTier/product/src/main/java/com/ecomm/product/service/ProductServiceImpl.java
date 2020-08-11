@@ -30,7 +30,7 @@ public class ProductServiceImpl implements  ProductService{
         _product.setImageUrl(product.getImageUrl());
         _product.setTag(product.getTag());
 
-        return productRepository.save(product);
+        return productRepository.save(_product);
     }
 
     @Override
