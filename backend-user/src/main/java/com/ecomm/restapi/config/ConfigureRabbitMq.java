@@ -18,9 +18,9 @@ import org.springframework.context.annotation.Configuration;
 public class ConfigureRabbitMq {
 
     public static final String EXCHANGE_NAME = "user.exchange";
-    public static final String QUEUE_NAME_CREATE = "user.queue.create";
-    public static final String QUEUE_NAME_INQUIRY = "user.queue.inquiry";
-    public static final String QUEUE_NAME_UPDATE = "user.queue.update";
+    public static final String QUEUE_NAME_CREATE = "api.user.create";
+    public static final String QUEUE_NAME_INQUIRY = "api.user.inquire";
+    public static final String QUEUE_NAME_UPDATE = "api.user.update";
 
     @Bean
     Queue createQueueCreate() {
@@ -40,17 +40,17 @@ public class ConfigureRabbitMq {
 
     @Bean
     Binding bindingCreateUser(Queue createQueueCreate, TopicExchange exchange) {
-        return BindingBuilder.bind(createQueueCreate).to(exchange).with("user.post.create");
+        return BindingBuilder.bind(createQueueCreate).to(exchange).with("*.user.create");
     }
 
     @Bean
     Binding bindingInquiryUser(Queue createQueueInquiry, TopicExchange exchange) {
-        return BindingBuilder.bind(createQueueInquiry).to(exchange).with("user.get.get");
+        return BindingBuilder.bind(createQueueInquiry).to(exchange).with("*.user.inquire");
     }
 
     @Bean
     Binding bindingUpdateUser(Queue createQueueUpdate, TopicExchange exchange) {
-        return BindingBuilder.bind(createQueueUpdate).to(exchange).with("user.post.update");
+        return BindingBuilder.bind(createQueueUpdate).to(exchange).with("*.user.update");
     }
 
     @Bean
@@ -59,44 +59,6 @@ public class ConfigureRabbitMq {
         rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
         return rabbitTemplate;
     }
-
-
-
-//    @Bean
-//    SimpleMessageListenerContainer containerModify(ConnectionFactory connectionFactory,
-//                                             MessageListenerAdapter listenerAdapterModify) {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames(QUEUE_NAME_MODIFY);
-//        container.setMessageListener(listenerAdapterModify);
-//        return container;
-//    }
-
-
-//    @Bean
-//    SimpleMessageListenerContainer containerInquiry(ConnectionFactory connectionFactory,
-//                                                   MessageListenerAdapter listenerAdapterInquiry) {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames(QUEUE_NAME_INQUIRY);
-//        container.setMessageListener(listenerAdapterInquiry);
-//        return container;
-//    }
-
-//    @Bean
-//    public MessageConverter jsonMessageConverter() {
-//        return new Jackson2JsonMessageConverter();
-//    }
-
-//    @Bean
-//    MessageListenerAdapter listenerAdapterModify(ReceiveMessageHandler handler) {
-//        return new MessageListenerAdapter(handler, "handleMessageModify");
-//    }
-
-//    @Bean
-//    MessageListenerAdapter listenerAdapterInquiry(ReceiveMessageHandler handler) {
-//        return new MessageListenerAdapter(handler, "handleMessageInquiry");
-//    }
 
     @Bean
     public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
